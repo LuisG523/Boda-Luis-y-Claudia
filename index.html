@@ -119,6 +119,7 @@ button{cursor:pointer;font-family:inherit}
   font-size:.68rem;letter-spacing:.12em;font-weight:500;
   color:var(--mist);display:flex;align-items:center;gap:5px;
   transition:border-color .25s,color .25s;
+  flex-shrink:0;
 }
 .lang-btn:hover{border-color:var(--gold);color:var(--gold)}
 .lang-btn span.on{color:var(--gold);font-weight:600}
@@ -128,51 +129,58 @@ button{cursor:pointer;font-family:inherit}
 .burger{
   display:none;flex-direction:column;gap:5px;
   background:none;border:none;padding:4px;
+  flex-shrink:0;
 }
 .burger b{display:block;width:22px;height:1.5px;background:var(--ink);transition:.3s var(--ease)}
 .burger.x b:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
 .burger.x b:nth-child(2){opacity:0}
 .burger.x b:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
 
+/* En móvil — lang toggle siempre visible y más grande */
+@media(max-width:800px){
+  .nav-wrap{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 20px;
+  }
+  .nav-right{gap:10px}
+  .lang-btn{
+    padding:7px 16px;
+    font-size:.78rem;
+    border-color:var(--gold);
+    color:var(--ink);
+    font-weight:600;
+  }
+  .lang-btn span.on{color:var(--gold)}
+}
+
 @media(max-width:800px){
   .burger{display:flex}
-
-  /* En móvil el ul sale del nav-wrap y se posiciona independientemente */
   #nav{overflow:visible !important}
   .nav-wrap{overflow:visible}
 
+  /* OCULTO por defecto — no display:flex, no transform, simplemente no existe */
   .nav-links{
-    /* Sacar del flujo del nav completamente */
+    display:none !important;
     position:fixed !important;
     top:var(--nav-h) !important;
     left:0 !important;
     right:0 !important;
-    bottom:auto !important;
     width:100% !important;
-
-    /* Apilado vertical */
-    display:flex !important;
     flex-direction:column !important;
     gap:0 !important;
-
-    /* Estilo */
     background:#faf8f5 !important;
     border-bottom:2px solid var(--linen) !important;
     box-shadow:0 8px 32px rgba(28,25,22,.12) !important;
-
-    /* Oculto por defecto, animado */
-    transform:translateY(-110%) !important;
-    transition:transform .35s cubic-bezier(.25,.46,.45,.94) !important;
     z-index:9999 !important;
-
-    /* No cortar contenido */
-    overflow:visible !important;
     padding:0 !important;
     margin:0 !important;
   }
 
+  /* VISIBLE cuando tiene clase .open */
   .nav-links.open{
-    transform:translateY(0) !important;
+    display:flex !important;
   }
 
   .nav-links li{
@@ -193,6 +201,7 @@ button{cursor:pointer;font-family:inherit}
   }
 
   .nav-links li:last-child a{border-bottom:none !important}
+  .nav-logo{font-size:1.1rem !important}
 }
 
 /* =====================================================
@@ -644,9 +653,16 @@ button{cursor:pointer;font-family:inherit}
 .cc a{
   font-family:var(--ff-head);font-size:1.12rem;
   font-weight:400;color:var(--ink);
-  transition:color .25s;
+  transition:color .25s;display:block;
 }
 .cc a:hover{color:var(--gold)}
+.cc-whatsapp{
+  font-family:var(--ff-body) !important;
+  font-size:.72rem !important;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gold) !important;
+  margin-top:8px;font-weight:500 !important;
+}
 
 /* =====================================================
    FOOTER
@@ -746,47 +762,47 @@ footer .f-love{font-size:.75rem;margin-top:10px;letter-spacing:.06em}
   <!-- Rejilla de fotos con año -->
   <div class="story-grid">
     <div class="sg-item reveal">
-      <div class="sg-img"><img src="images/2014.jpg" alt="2014"/></div>
+      <div class="sg-img"><img src="images/2014.jpg" alt="2014" style="object-position:center top"/></div>
       <span class="sg-year">2014</span>
     </div>
     <div class="sg-item reveal" data-delay="1">
-      <div class="sg-img"><img src="images/2015.jpg" alt="2015"/></div>
+      <div class="sg-img"><img src="images/2015.jpg" alt="2015" style="object-position:center top"/></div>
       <span class="sg-year">2015</span>
     </div>
     <div class="sg-item reveal" data-delay="2">
-      <div class="sg-img"><img src="images/2017.jpg" alt="2017"/></div>
+      <div class="sg-img"><img src="images/2017.jpg" alt="2017" style="object-position:center top"/></div>
       <span class="sg-year">2017</span>
     </div>
     <div class="sg-item reveal" data-delay="3">
-      <div class="sg-img"><img src="images/2018.jpg" alt="2018"/></div>
+      <div class="sg-img"><img src="images/2018.jpg" alt="2018" style="object-position:center top"/></div>
       <span class="sg-year">2018</span>
     </div>
     <div class="sg-item reveal">
-      <div class="sg-img"><img src="images/2019.jpg" alt="2019"/></div>
+      <div class="sg-img"><img src="images/2019.jpg" alt="2019" style="object-position:center top"/></div>
       <span class="sg-year">2019</span>
     </div>
     <div class="sg-item reveal" data-delay="1">
-      <div class="sg-img"><img src="images/2020.jpg" alt="2020"/></div>
+      <div class="sg-img"><img src="images/2020.jpg" alt="2020" style="object-position:center top"/></div>
       <span class="sg-year">2020</span>
     </div>
     <div class="sg-item reveal" data-delay="2">
-      <div class="sg-img"><img src="images/2021.jpg" alt="2021"/></div>
+      <div class="sg-img"><img src="images/2021.jpg" alt="2021" style="object-position:center top"/></div>
       <span class="sg-year">2021</span>
     </div>
     <div class="sg-item reveal" data-delay="3">
-      <div class="sg-img"><img src="images/2022.jpg" alt="2022"/></div>
+      <div class="sg-img"><img src="images/2022.jpg" alt="2022" style="object-position:center top"/></div>
       <span class="sg-year">2022</span>
     </div>
     <div class="sg-item reveal">
-      <div class="sg-img"><img src="images/2023.jpg" alt="2023"/></div>
+      <div class="sg-img"><img src="images/2023.jpg" alt="2023" style="object-position:center top"/></div>
       <span class="sg-year">2023</span>
     </div>
     <div class="sg-item reveal" data-delay="1">
-      <div class="sg-img"><img src="images/2024.jpg" alt="2024"/></div>
+      <div class="sg-img"><img src="images/2024.jpg" alt="2024" style="object-position:center top"/></div>
       <span class="sg-year">2024</span>
     </div>
     <div class="sg-item reveal" data-delay="2">
-      <div class="sg-img"><img src="images/2025.jpg" alt="2025"/></div>
+      <div class="sg-img"><img src="images/2025.jpg" alt="2025" style="object-position:center top"/></div>
       <span class="sg-year">2025</span>
     </div>
     <div class="sg-item reveal" data-delay="3">
@@ -866,7 +882,7 @@ footer .f-love{font-size:.75rem;margin-top:10px;letter-spacing:.06em}
 
     <!-- Solo adultos -->
     <div class="detail-card reveal" style="grid-column:span 2">
-      <div class="d-icon">👶🚫</div>
+      <div class="d-icon">🌙✨</div>
       <h3 data-k="det.adult.h">Una celebración solo para adultos</h3>
       <p class="d-text" data-k="det.adult.p">Hemos pensado esta boda como una noche especial para disfrutar sin preocupaciones. Os pedimos con todo el cariño que los más pequeños se queden en casa esta vez — así todos podréis celebrar con nosotros hasta el final.</p>
     </div>
@@ -897,10 +913,10 @@ footer .f-love{font-size:.75rem;margin-top:10px;letter-spacing:.06em}
         <input type="text" id="f-name" name="name" required placeholder="Tu nombre y apellidos"/>
       </div>
 
-      <!-- Email -->
+      <!-- Teléfono -->
       <div class="fg">
-        <label for="f-email" data-k="f.email">Email</label>
-        <input type="email" id="f-email" name="email" required placeholder="tu@email.com"/>
+        <label for="f-phone" data-k="f.phone">Teléfono</label>
+        <input type="tel" id="f-phone" name="phone" required placeholder="600 000 000"/>
       </div>
 
       <!-- Asistencia -->
@@ -999,11 +1015,13 @@ footer .f-love{font-size:.75rem;margin-top:10px;letter-spacing:.06em}
       <div class="cc-icon">📱</div>
       <p class="cc-label">Luis</p>
       <a href="tel:+34609339335">609 339 335</a>
+      <a href="https://wa.me/34609339335" class="cc-whatsapp" target="_blank">WhatsApp</a>
     </div>
     <div class="cc">
       <div class="cc-icon">📱</div>
       <p class="cc-label">Claudia</p>
       <a href="tel:+34679323882">679 323 882</a>
+      <a href="https://wa.me/34679323882" class="cc-whatsapp" target="_blank">WhatsApp</a>
     </div>
   </div>
 </div>
@@ -1055,7 +1073,7 @@ const T = {
     'sch.5':'Baile & Fiesta',
     'sch.6':'Primer autobús de vuelta','sch.7':'Segundo autobús de vuelta','sch.8':'Último autobús de vuelta',
     'rsvp.pre':'¿Vendrás?','rsvp.dead':'Por favor confirma antes del 12 de Mayo de 2026',
-    'f.name':'Nombre completo','f.email':'Email','f.attend':'¿Asistirás?',
+    'f.name':'Nombre completo','f.phone':'Teléfono','f.attend':'¿Asistirás?',
     'f.yes':'¡Sí, allá estaré! 🎉','f.no':'Lo siento, no podré ir',
     'f.you':'Tus datos',
     'f.gcount':'Número de acompañantes (sin contarte a ti)',
@@ -1089,7 +1107,7 @@ const T = {
     'sch.5':'Dancing & Party',
     'sch.6':'First bus back','sch.7':'Second bus back','sch.8':'Last bus back',
     'rsvp.pre':'Will you join us?','rsvp.dead':'Please RSVP by May 12th, 2026',
-    'f.name':'Full name','f.email':'Email','f.attend':'Will you attend?',
+    'f.name':'Full name','f.phone':'Phone number','f.attend':'Will you attend?',
     'f.yes':'Yes, I\'ll be there! 🎉','f.no':'Sorry, I can\'t make it',
     'f.you':'Your details',
     'f.gcount':'Additional guests (not counting yourself)',
@@ -1298,9 +1316,9 @@ form.addEventListener('submit', async e=>{
   e.preventDefault();
 
   const nameVal  = form.querySelector('[name="name"]').value.trim();
-  const emailVal = form.querySelector('[name="email"]').value.trim();
-  if(!nameVal || !emailVal){
-    alert(lang==='es' ? 'Por favor rellena tu nombre y email.' : 'Please fill in your name and email.');
+  const phoneVal = form.querySelector('[name="phone"]').value.trim();
+  if(!nameVal || !phoneVal){
+    alert(lang==='es' ? 'Por favor rellena tu nombre y teléfono.' : 'Please fill in your name and phone.');
     return;
   }
 
@@ -1320,7 +1338,7 @@ form.addEventListener('submit', async e=>{
   rows.push({
     timestamp,
     name:          nameVal,
-    email:         emailVal,
+    email:         phoneVal,
     attending,
     dietary:       form.querySelector('[name="dietary_0"]')?.value.trim() || '',
     busTo:         getRadio('busTo_0'),
