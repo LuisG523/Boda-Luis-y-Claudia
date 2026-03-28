@@ -87,6 +87,7 @@ button{cursor:pointer;font-family:inherit}
   backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
   border-bottom:1px solid transparent;
   transition:border-color .3s,box-shadow .3s;
+  overflow:visible;
 }
 #nav.stuck{
   border-color:var(--linen);
@@ -135,18 +136,63 @@ button{cursor:pointer;font-family:inherit}
 
 @media(max-width:800px){
   .burger{display:flex}
+
+  /* En móvil el ul sale del nav-wrap y se posiciona independientemente */
+  #nav{overflow:visible !important}
+  .nav-wrap{overflow:visible}
+
   .nav-links{
-    position:fixed;top:var(--nav-h);left:0;right:0;
-    flex-direction:column;gap:0;
-    background:rgba(249,246,240,.97);
-    backdrop-filter:blur(24px);
-    border-bottom:1px solid var(--linen);
-    transform:translateY(-110%);
-    transition:transform .35s var(--ease);
-    padding:8px 0 20px;
+    /* Sacar del flujo del nav completamente */
+    position:fixed !important;
+    top:var(--nav-h) !important;
+    left:0 !important;
+    right:0 !important;
+    bottom:auto !important;
+    width:100% !important;
+
+    /* Apilado vertical */
+    display:flex !important;
+    flex-direction:column !important;
+    gap:0 !important;
+
+    /* Estilo */
+    background:#faf8f5 !important;
+    border-bottom:2px solid var(--linen) !important;
+    box-shadow:0 8px 32px rgba(28,25,22,.12) !important;
+
+    /* Oculto por defecto, animado */
+    transform:translateY(-110%) !important;
+    transition:transform .35s cubic-bezier(.25,.46,.45,.94) !important;
+    z-index:9999 !important;
+
+    /* No cortar contenido */
+    overflow:visible !important;
+    padding:0 !important;
+    margin:0 !important;
   }
-  .nav-links.open{transform:translateY(0)}
-  .nav-links a{padding:13px 24px;text-align:center;display:block;font-size:.8rem}
+
+  .nav-links.open{
+    transform:translateY(0) !important;
+  }
+
+  .nav-links li{
+    width:100% !important;
+    display:block !important;
+    margin:0 !important;
+    padding:0 !important;
+  }
+
+  .nav-links a{
+    display:block !important;
+    width:100% !important;
+    padding:18px 24px !important;
+    text-align:center !important;
+    font-size:.9rem !important;
+    border-bottom:1px solid var(--linen) !important;
+    color:var(--ink) !important;
+  }
+
+  .nav-links li:last-child a{border-bottom:none !important}
 }
 
 /* =====================================================
@@ -365,31 +411,42 @@ button{cursor:pointer;font-family:inherit}
   flex-shrink:0;
 }
 
-/* Map */
-/* Mapas — dos columnas */
-.maps-wrap{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:32px;
+/* Map inline dentro de tarjeta */
+.map-box-inline{
+  width:100%;height:200px;
+  border-radius:2px;overflow:hidden;
+  border:1px solid var(--linen);
   margin-top:16px;
 }
-.map-item{display:flex;flex-direction:column;gap:10px}
-.map-title{
-  font-family:var(--ff-head);font-size:1.6rem;
-  font-weight:300;color:var(--ink);
-}
-.map-sub{
-  font-size:.78rem;color:var(--light);
-  letter-spacing:.05em;margin-bottom:4px;
-}
-.map-box{
-  width:100%;height:320px;border-radius:2px;overflow:hidden;
-  border:1px solid var(--linen);
-  box-shadow:0 4px 32px rgba(28,25,22,.06);
-}
-.map-box iframe{width:100%;height:100%;border:none}
-@media(max-width:700px){
+.map-box-inline iframe{width:100%;height:100%;border:none}
+
+/* =====================================================
+   MOBILE FIXES
+   ===================================================== */
+@media(max-width:768px){
+  /* Secciones centradas */
+  .section{padding:64px 20px}
+  .full-bleed,.ivory-bleed{padding:64px 20px}
+
+  /* Details grid — una columna en móvil */
+  .details-grid{grid-template-columns:1fr !important}
+  .detail-card[style*="grid-column"]{grid-column:1 !important}
+
+  /* Mapas apilados */
   .maps-wrap{grid-template-columns:1fr}
+
+  /* Nav — asegurar que el menú completo se muestre */
+  .nav-links{z-index:999}
+
+  /* Contacto */
+  .contact-cards{flex-direction:column;align-items:center}
+  .cc{min-width:280px;max-width:100%}
+
+  /* RSVP */
+  .rsvp-inner{max-width:100%}
+
+  /* Hero texto */
+  .hero-names{font-size:clamp(3rem,14vw,6rem)}
 }
 
 /* =====================================================
@@ -753,6 +810,7 @@ footer .f-love{font-size:.75rem;margin-top:10px;letter-spacing:.06em}
     <h2 class="display" data-k="det.title">Detalles del Evento</h2>
   </div>
 
+  <!-- Grid de detalles: ceremonia + celebración con mapa integrado, luego horario y adultos -->
   <div class="details-grid">
 
     <!-- Ceremonia -->
@@ -762,6 +820,14 @@ footer .f-love{font-size:.75rem;margin-top:10px;letter-spacing:.06em}
       <p class="d-time">12 Junio 2026 · 17:30h</p>
       <p class="d-place">Parroquia de Ntra. Sra. de Guadalupe</p>
       <p class="d-addr">Madrid</p>
+      <div class="map-box map-box-inline">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3036.045122860243!2d-3.6776254254859015!3d40.45213825348581!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd4228d9acbf53ef%3A0x2fd2ea79df813af6!2sParish%20of%20Our%20Lady%20of%20Guadalupe!5e0!3m2!1sen!2ses!4v1774556145712!5m2!1sen!2ses"
+          allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Parroquia de Nuestra Señora de Guadalupe, Madrid">
+        </iframe>
+      </div>
     </div>
 
     <!-- Celebración -->
@@ -771,6 +837,14 @@ footer .f-love{font-size:.75rem;margin-top:10px;letter-spacing:.06em}
       <p class="d-time">12 Junio 2026 · 19:30h</p>
       <p class="d-place">Las Llaves del Carmen</p>
       <p class="d-addr">Valdemorillo, Madrid</p>
+      <div class="map-box map-box-inline">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12132.58419716186!2d-4.097972032278596!3d40.51626284519709!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd41a1eebda8a687%3A0x4cf4d544daccd5a!2sLas%20Llaves%20del%20Carmen!5e0!3m2!1sen!2ses!4v1774556171131!5m2!1sen!2ses"
+          allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Las Llaves del Carmen, Valdemorillo">
+        </iframe>
+      </div>
     </div>
 
     <!-- Horario -->
@@ -795,41 +869,6 @@ footer .f-love{font-size:.75rem;margin-top:10px;letter-spacing:.06em}
       <div class="d-icon">👶🚫</div>
       <h3 data-k="det.adult.h">Una celebración solo para adultos</h3>
       <p class="d-text" data-k="det.adult.p">Hemos pensado esta boda como una noche especial para disfrutar sin preocupaciones. Os pedimos con todo el cariño que los más pequeños se queden en casa esta vez — así todos podréis celebrar con nosotros hasta el final.</p>
-    </div>
-
-  </div>
-
-  <!-- Mapas -->
-  <div class="maps-wrap reveal">
-
-    <div class="map-item">
-      <h3 class="map-title display">⛪ Ceremonia</h3>
-      <p class="map-sub">Parroquia de Ntra. Sra. de Guadalupe · Madrid</p>
-      <div class="map-box">
-        <!-- ✏️ EDIT: Pega el embed de Google Maps de la iglesia -->
-        <!-- Google Maps → busca "Parroquia Nuestra Señora de Guadalupe Madrid" → Compartir → Insertar un mapa → copia el src -->
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3036.045122860243!2d-3.6776254254859015!3d40.45213825348581!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd4228d9acbf53ef%3A0x2fd2ea79df813af6!2sParish%20of%20Our%20Lady%20of%20Guadalupe!5e0!3m2!1sen!2ses!4v1774556145712!5m2!1sen!2ses"
-          allowfullscreen="" loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-          title="Parroquia de Nuestra Señora de Guadalupe, Madrid">
-        </iframe>
-      </div>
-    </div>
-
-    <div class="map-item">
-      <h3 class="map-title display">🥂 Celebración</h3>
-      <p class="map-sub">Las Llaves del Carmen · Valdemorillo</p>
-      <div class="map-box">
-        <!-- ✏️ EDIT: Pega el embed de Google Maps de la finca -->
-        <!-- Google Maps → busca "Las Llaves del Carmen Valdemorillo" → Compartir → Insertar un mapa → copia el src -->
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12132.58419716186!2d-4.097972032278596!3d40.51626284519709!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd41a1eebda8a687%3A0x4cf4d544daccd5a!2sLas%20Llaves%20del%20Carmen!5e0!3m2!1sen!2ses!4v1774556171131!5m2!1sen!2ses"
-          allowfullscreen="" loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-          title="Las Llaves del Carmen, Valdemorillo">
-        </iframe>
-      </div>
     </div>
 
   </div>
@@ -931,12 +970,6 @@ footer .f-love{font-size:.75rem;margin-top:10px;letter-spacing:.06em}
       </div><!-- /guestBlock -->
 
       <button type="submit" class="btn-sub" data-k="f.submit">Enviar confirmación</button>
-
-      <!-- ✏️ EDIT: Tu email de contacto -->
-      <p class="form-note" data-k="f.note">
-        Si tienes problemas con el formulario, escríbenos a
-        <a href="/cdn-cgi/l/email-protection#11737e757051747b747c617d7e3f727e7c"><span class="__cf_email__" data-cfemail="9bf9f4fffadbfef1fef6ebf7f4b5f8f4f6">[email&#160;protected]</span></a>
-      </p>
 
     </form>
 
