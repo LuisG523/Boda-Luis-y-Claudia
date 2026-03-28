@@ -1379,75 +1379,43 @@ form.addEventListener('submit', async e=>{
     });
   }
 
-  try{
-    const payload = { rows };
+  // Mostrar éxito inmediatamente — no bloqueamos al usuario esperando respuesta
+  form.classList.add('hidden');
+  document.getElementById('rsvpOk').classList.remove('hidden');
 
-    if(CFG.sheetsURL){
-      // Usamos un iframe + form oculto — único método 100% fiable con Google Apps Script sin CORS
-      await new Promise((resolve, reject) => {
-        // Crear iframe oculto para capturar la respuesta
-        const iframe = document.createElement('iframe');
-        iframe.name = 'rsvp-iframe-' + Date.now();
-        iframe.style.display = 'none';
-        document.body.appendChild(iframe);
+  // Enviamos en background — si falla no afecta al usuario
+  const payload = { rows };
 
-        // Crear form oculto apuntando al iframe
-        const hiddenForm = document.createElement('form');
-        hiddenForm.method = 'POST';
-        hiddenForm.action = CFG.sheetsURL;
-        hiddenForm.target = iframe.name;
-        hiddenForm.style.display = 'none';
+  if(CFG.sheetsURL){
+    const iframe = document.createElement('iframe');
+    iframe.name = 'rsvp_frame';
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
 
-        // Añadir datos como campo oculto
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = 'data';
-        input.value = JSON.stringify(payload);
-        hiddenForm.appendChild(input);
+    const hiddenForm = document.createElement('form');
+    hiddenForm.method = 'POST';
+    hiddenForm.action = CFG.sheetsURL;
+    hiddenForm.target = 'rsvp_frame';
+    hiddenForm.style.display = 'none';
 
-        document.body.appendChild(hiddenForm);
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'data';
+    input.value = JSON.stringify(payload);
+    hiddenForm.appendChild(input);
+    document.body.appendChild(hiddenForm);
+    hiddenForm.submit();
 
-        // Timeout de seguridad
-        const timeout = setTimeout(() => {
-          cleanup();
-          reject(new Error('timeout'));
-        }, 10000);
-
-        function cleanup(){
-          clearTimeout(timeout);
-          try{ document.body.removeChild(iframe); }catch(e){}
-          try{ document.body.removeChild(hiddenForm); }catch(e){}
-        }
-
-        iframe.onload = () => {
-          cleanup();
-          resolve();
-        };
-
-        hiddenForm.submit();
-      });
-
-    } else if(CFG.formspreeURL){
-      const r = await fetch(CFG.formspreeURL, {
-        method:'POST',
-        headers:{'Content-Type':'application/json','Accept':'application/json'},
-        body: JSON.stringify(rows[0]),
-      });
-      if(!r.ok) throw new Error('error');
-    } else {
-      console.log('[RSVP sin backend]', payload);
-    }
-
-    form.classList.add('hidden');
-    document.getElementById('rsvpOk').classList.remove('hidden');
-
-  } catch(err){
-    console.error(err);
-    btn.textContent = lang==='es' ? '❌ Error — inténtalo de nuevo' : '❌ Error — try again';
-    btn.style.background = '#b55';
-    btn.disabled = false;
-    setTimeout(()=>{ btn.textContent=origLabel; btn.style.background=''; }, 4000);
+    // Limpiar después de 5 segundos
+    setTimeout(()=>{
+      try{ document.body.removeChild(iframe); }catch(e){}
+      try{ document.body.removeChild(hiddenForm); }catch(e){}
+    }, 5000);
+  } else {
+    console.log('[RSVP sin backend]', payload);
   }
+
+  btn.disabled = false;
 });
 
 /* =====================================================
