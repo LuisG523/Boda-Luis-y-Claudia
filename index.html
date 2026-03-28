@@ -1383,14 +1383,50 @@ form.addEventListener('submit', async e=>{
     const payload = { rows };
 
     if(CFG.sheetsURL){
-      // Enviamos como FormData con no-cors — único método que acepta Google Apps Script
-      const fd = new FormData();
-      fd.append('data', JSON.stringify(payload));
-      await fetch(CFG.sheetsURL, {
-        method: 'POST',
-        mode:   'no-cors',
-        body:   fd,
+      // Usamos un iframe + form oculto — único método 100% fiable con Google Apps Script sin CORS
+      await new Promise((resolve, reject) => {
+        // Crear iframe oculto para capturar la respuesta
+        const iframe = document.createElement('iframe');
+        iframe.name = 'rsvp-iframe-' + Date.now();
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+
+        // Crear form oculto apuntando al iframe
+        const hiddenForm = document.createElement('form');
+        hiddenForm.method = 'POST';
+        hiddenForm.action = CFG.sheetsURL;
+        hiddenForm.target = iframe.name;
+        hiddenForm.style.display = 'none';
+
+        // Añadir datos como campo oculto
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'data';
+        input.value = JSON.stringify(payload);
+        hiddenForm.appendChild(input);
+
+        document.body.appendChild(hiddenForm);
+
+        // Timeout de seguridad
+        const timeout = setTimeout(() => {
+          cleanup();
+          reject(new Error('timeout'));
+        }, 10000);
+
+        function cleanup(){
+          clearTimeout(timeout);
+          try{ document.body.removeChild(iframe); }catch(e){}
+          try{ document.body.removeChild(hiddenForm); }catch(e){}
+        }
+
+        iframe.onload = () => {
+          cleanup();
+          resolve();
+        };
+
+        hiddenForm.submit();
       });
+
     } else if(CFG.formspreeURL){
       const r = await fetch(CFG.formspreeURL, {
         method:'POST',
