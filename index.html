@@ -1298,17 +1298,18 @@ form.addEventListener('submit', async e=>{
   }
 
   try{
-    // Enviar todas las filas — una petición con el array completo
     const payload = { rows };
 
     if(CFG.sheetsURL){
+      // Enviamos como FormData con no-cors — único método que acepta Google Apps Script
+      const fd = new FormData();
+      fd.append('data', JSON.stringify(payload));
       await fetch(CFG.sheetsURL, {
-        method:'POST', mode:'no-cors',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify(payload),
+        method: 'POST',
+        mode:   'no-cors',
+        body:   fd,
       });
     } else if(CFG.formspreeURL){
-      // Formspree solo acepta una fila — enviamos la primera
       const r = await fetch(CFG.formspreeURL, {
         method:'POST',
         headers:{'Content-Type':'application/json','Accept':'application/json'},
