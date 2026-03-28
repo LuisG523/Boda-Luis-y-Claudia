@@ -1368,7 +1368,7 @@ form.addEventListener('submit', async e=>{
     rows.push({
       timestamp,
       name:          form.querySelector(`[name="gname_${i}"]`)?.value.trim() || `Acompañante ${i}`,
-      email:         emailVal,
+      email:         phoneVal,
       attending,
       dietary:       form.querySelector(`[name="gdiet_${i}"]`)?.value.trim() || '',
       busTo:         getRadio(`gbusTo_${i}`),
