@@ -161,10 +161,10 @@ button{cursor:pointer;font-family:inherit}
 /* Beautiful placeholder using CSS gradient art */
 .hero-bg{
   position:absolute;inset:0;
-  background-color: #faf8f5;
+  background-color: #f5ede0;
   background-image: url('images/hero.jpg');
-  background-size: contain;
-  background-position: center center;
+  background-size: 55%;
+  background-position: center bottom;
   background-repeat: no-repeat;
   transform:scale(1.04);
   animation:heroScale 14s ease-out forwards;
@@ -174,9 +174,9 @@ button{cursor:pointer;font-family:inherit}
   content:'';position:absolute;inset:0;
   background: linear-gradient(
     to bottom,
-    rgba(250,248,245,0.15) 0%,
-    rgba(250,248,245,0.05) 40%,
-    rgba(250,248,245,0.55) 100%
+    rgba(245,237,224,0.0) 0%,
+    rgba(245,237,224,0.0) 50%,
+    rgba(245,237,224,0.7) 100%
   );
 }
 
@@ -451,7 +451,17 @@ button{cursor:pointer;font-family:inherit}
   color:var(--ink);
 }
 
-/* Tarjeta por persona en el RSVP */
+/* Tarjeta adultos */
+.adult-card{
+  background:linear-gradient(135deg, rgba(168,131,74,.06) 0%, rgba(168,131,74,.02) 100%);
+  border-color:rgba(168,131,74,.25);
+  text-align:center;
+}
+.adult-card .d-text{
+  max-width:560px;margin:0 auto;
+  font-size:.9rem;line-height:1.85;color:var(--mist);
+  font-style:italic;
+}
 .guest-card{
   border:1px solid var(--linen);
   border-radius:2px;
@@ -785,6 +795,13 @@ footer .f-love{font-size:.75rem;margin-top:10px;letter-spacing:.06em}
       </ul>
     </div>
 
+    <!-- Solo adultos -->
+    <div class="detail-card reveal adult-card" style="grid-column:span 2">
+      <div class="d-icon">🥂</div>
+      <h3 data-k="det.adult.h">Una celebración solo para adultos</h3>
+      <p class="d-text" data-k="det.adult.p">Hemos pensado esta boda como una noche especial para disfrutar sin preocupaciones. Os pedimos con todo el cariño que los más pequeños se queden en casa esta vez — así todos podréis celebrar con nosotros hasta el final.</p>
+    </div>
+
   </div>
 
   <!-- Mapas -->
@@ -1002,6 +1019,8 @@ const T = {
     'det.pre':'Todo lo que necesitas saber','det.title':'Detalles del Evento',
     'det.cer.h':'Ceremonia','det.rec.h':'Celebración',
     'det.sched.h':'Horario','det.map.h':'Cómo llegar',
+    'det.adult.h':'Una celebración solo para adultos',
+    'det.adult.p':'Hemos pensado esta boda como una noche especial para disfrutar sin preocupaciones. Os pedimos con todo el cariño que los más pequeños se queden en casa esta vez — así todos podréis celebrar con nosotros hasta el final.',
     'sch.1':'Llegada de invitados','sch.2':'Ceremonia',
     'sch.bus':'Autobús a la finca',
     'sch.3':'Llegada a la finca · Cóctel','sch.4':'Banquete',
@@ -1034,6 +1053,8 @@ const T = {
     'det.pre':'Everything you need to know','det.title':'Event Details',
     'det.cer.h':'Ceremony','det.rec.h':'Reception',
     'det.sched.h':'Schedule','det.map.h':'Getting there',
+    'det.adult.h':'An adults-only celebration',
+    'det.adult.p':'We\'ve planned this wedding as a special night for everyone to enjoy without a worry. We kindly ask that little ones stay home this time — so you can celebrate with us all the way to the end.',
     'sch.1':'Guests arrive','sch.2':'Ceremony',
     'sch.bus':'Bus to the venue',
     'sch.3':'Arrival at venue · Cocktail hour','sch.4':'Dinner',
